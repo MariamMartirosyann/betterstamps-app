@@ -40,6 +40,15 @@ const ShoppingCart = () => {
     return sum;
   }, [cart]);
 
+   const totalQuantity = useMemo(() => {
+    const totalSum = cart.cartItems.map((item) => {
+      return parseInt(item.cartQuantity )
+    });
+    const sum = totalSum.reduce((a, b) => a + b, 0);
+
+    return sum;
+  }, [cart]);
+
   const totalDiscount = useMemo(() => {
     const totalSum = cart.cartItems.map((item) => {
       const total = parseInt(item.cartQuantity * item.price)
@@ -74,7 +83,7 @@ const ShoppingCart = () => {
     <>
       <Navbar />
       <Typography variant="h3" style={{ textAlign: "center" }}>
-        Shopping Cart
+        Shopping Cart {totalQuantity }
       </Typography>
       {!cart.cartItems.length ? (
         <>
@@ -202,6 +211,7 @@ const ShoppingCart = () => {
             <Grid item>
               {" "}
               <Typography variant="h6" style={{ marginRight: "150px" }}>
+                {}
                 Total Amount With Discount : {!isNaN(totalAmountWithDiscount) ?  totalAmountWithDiscount : 0}AMD{" "}
               </Typography>
             </Grid>
