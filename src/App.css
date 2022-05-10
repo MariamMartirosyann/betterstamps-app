@@ -17,3 +17,12 @@ table{
     height: 20px;
     
 }
+.navbar{
+    width: 100%;
+    height: 70px;
+    background:rgba(87, 32, 16, 0.69);
+    margin-bottom: 10px;
+}
+.textDecorationNone{
+    textDecoration:"none"
+}

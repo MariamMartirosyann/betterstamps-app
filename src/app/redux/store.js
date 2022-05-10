@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import cartReducer from './cartSlice';
+import { useDispatch } from 'react-redux';
+import cartReducer,{getTotals} from './cartSlice';
 import stampReducer from './stampSlice'
 
 
@@ -8,5 +9,7 @@ export const store = configureStore({
     cart:cartReducer,
     stamp:stampReducer,
   },
+  
 });
-   
+
+//store.dispatch(getTotals()); 

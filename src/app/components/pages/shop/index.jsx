@@ -20,7 +20,7 @@ const dispatch = useDispatch();
 
   const handleAddToCart = (stamp) => {
     dispatch(addToCart(stamp));
-    navigate("/shoppingCart")
+   // navigate("/shoppingCart")
   };
 
   return (
