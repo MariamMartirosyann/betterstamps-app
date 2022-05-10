@@ -6,7 +6,6 @@ import {
   addToCart,
   clearCart,
   decreaseCart,
-  getTotals,
   removeFromCart,
 } from "../../../redux/cartSlice";
 import BtnComponent from "../../../shared/UI/BtnComponents";
@@ -41,6 +40,34 @@ const ShoppingCart = () => {
     return sum;
   }, [cart]);
 
+  const totalDiscount = useMemo(() => {
+    const totalSum = cart.cartItems.map((item) => {
+      const total = parseInt(item.cartQuantity * item.price)
+      if(total > 2000){
+        return total * 0.1
+      }
+     return
+    });
+    const sum = totalSum.reduce((a, b) => a + b, 0);
+
+    return sum
+  }, [cart]);
+
+  const totalAmountWithDiscount = useMemo(() => {
+    const totalSum = cart.cartItems.map((item) => {
+      const totalSum = parseInt(item.cartQuantity * item.price);
+      const discount = totalSum * 0.1
+      if(totalSum > 2000){
+      return parseInt(totalSum - discount);}
+      return
+    });
+    const sum = totalSum.reduce((a, b) => a + b, 0);
+
+    return sum;
+  }, [cart]);
+
+  
+
   console.log(totalAmount, "cart");
 
   return (
@@ -50,14 +77,22 @@ const ShoppingCart = () => {
         Shopping Cart
       </Typography>
       {!cart.cartItems.length ? (
-        <><Typography variant="h3" style={{ textAlign: "start",margin :"20px" }}>
-        Shopping Cart is Empty
-      </Typography>
-      <Link to="/">
-      <Typography variant="h6" style={{ textAlign: "end",margin :"20px" }}>
-      Visit Shop
-    </Typography> </Link></>
-    
+        <>
+          <Typography
+            variant="h3"
+            style={{ textAlign: "start", margin: "20px" }}
+          >
+            Shopping Cart is Empty
+          </Typography>
+          <Link to="/">
+            <Typography
+              variant="h6"
+              style={{ textAlign: "end", margin: "20px" }}
+            >
+              Visit Shop
+            </Typography>{" "}
+          </Link>
+        </>
       ) : (
         <>
           <table>
@@ -78,8 +113,15 @@ const ShoppingCart = () => {
                 <th>
                   <Typography variant="h6">Total</Typography>
                 </th>
+                <th>
+                  <Typography variant="h6">Discount</Typography>
+                </th>
+                <th>
+                  <Typography variant="h6"> Total With Discount</Typography>
+                </th>
               </tr>
             </thead>
+
             <tbody>
               {cart.cartItems &&
                 cart.cartItems.map((cartItem) => (
@@ -116,21 +158,52 @@ const ShoppingCart = () => {
                         />
                       </div>
                     </th>
+
                     <th>{cartItem.price * cartItem.cartQuantity}</th>
+                    {parseInt(cartItem.price * cartItem.cartQuantity) > 2000 ? (
+                      <>
+                        {" "}
+                        <th>{cartItem.price * cartItem.cartQuantity * 0.1}</th>
+                        <th>
+                          {cartItem.price * cartItem.cartQuantity -
+                            cartItem.price * cartItem.cartQuantity * 0.1}
+                        </th>
+                       
+                      
+                      </>
+                    ) : null}
                   </tr>
+                  
                 ))}
             </tbody>
           </table>
+          <br />
+          <hr className="hr" />
           <Grid container style={{ margin: "30px" }}>
-            <Grid item style={{ maarginRight: "50px" }}>
+            <Grid item style={{ marginRight: "50px" }}>
               <BtnComponent
                 text={"Clear All"}
                 onClick={() => handleClearCart()}
               />
             </Grid>
-            <Grid item style={{ marginLeft: "50px" }}>
+            <Grid item>
               {" "}
-              Total Amount : ${totalAmount}{" "}
+              <Typography variant="h6" style={{ marginRight: "150px" }}>
+                Total Amount : {totalAmount}AMD{" "}
+              </Typography>
+            </Grid>
+
+            <Grid item>
+              {" "}
+              <Typography variant="h6" style={{ marginRight: "150px" }}>
+                Total Discount : {!isNaN(totalDiscount) ?  totalDiscount : 0}AMD{" "}
+              </Typography>
+            </Grid>
+            <Grid item>
+              {" "}
+              <Typography variant="h6" style={{ marginRight: "150px" }}>
+                Total Amount With Discount : {!isNaN(totalAmountWithDiscount) ?  totalAmountWithDiscount : 0}AMD{" "}
+              </Typography>
             </Grid>
           </Grid>
         </>

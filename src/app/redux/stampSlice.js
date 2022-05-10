@@ -5,6 +5,7 @@ import {stampsList} from './constants/index';
 const stampSlice = createSlice({
   name: "stamp",
   initialState:stampsList,
+  
  
 });
 
